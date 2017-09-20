@@ -21,55 +21,42 @@ public class Cell {
 			possibleValues.add(i+1);
 		}
 	}
-	
 	public int getRow(){
 		return row;
 	}
-	
 	public void setRow(int num){
 		this.row = num;
 	}
-	
 	public int getCol(){
 		return col;
-	}
-	
-	
+	}	
 	public void setCol(int num){
 		this.col = num;
-	}
-	
+	}	
 	public int getValue(){
 		return value;
-	}
-	
+	}	
 	public void setValue(int num){
 		this.value = num;
-	}
-	
+	}	
 	public int getCounter(){
 		return counter;
-	}
-	
+	}	
 	public void setCounter(int num){
 		this.counter = num;
-	}
-	
+	}	
 	public int getPossibleArraySize(){
 		return possibleValues.size();
-	}
-	
+	}	
 	public List<Integer> getPossibleValues(){
 		return possibleValues;
-	}
-	
+	}	
 	public void addPossibleValue(int num){
 		if(!possibleValues.contains(num))
 			possibleValues.add(num);
 		else
 			System.out.println("Adding Duplicate Value to PossibleValue Arraylist");
-	}
-	
+	}	
 	public int removePossibleValue(int num){
 		if(possibleValues.contains(num)){
 			return possibleValues.remove(possibleValues.indexOf(num));
@@ -78,28 +65,24 @@ public class Cell {
 		}else{
 			throw new NoSuchElementException();
 		}
-	}
-	
+	}	
 	public boolean containsPossibleValue(int num){
 		if(possibleValues.contains(num)){
 			return true;
 		}
 		return false;
 	}
-	
 	public boolean hasPossibleValues(){
 		if(possibleValues.size()>0){
 			return true;
 		}
 		return false;
-	}
-	
+	}	
 	public void printPossibilities() {
 		for(int i=0;i<possibleValues.size();i++){
 			System.out.println(possibleValues.get(i));
 		}
-	}
-	
+	}	
 	@Override
 	public String toString(){
 		return "[" + (row+1) + "," + (col+1) + "] = " + value;

@@ -1,7 +1,8 @@
-import java.util.List;
+
 
 public class Grid {
 	private static Cell[][] grid;
+	
 	/**
 	 * Constructor to create a Grid object
 	 */
@@ -13,7 +14,9 @@ public class Grid {
 			}
 		}
 	}
-
+	/*
+	 * Prints out values held by cells in the grid.
+	 */
 	public void printGrid(){
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
@@ -23,53 +26,6 @@ public class Grid {
 		}
 		System.out.println();
 	}
-	
-	public void backTrackingAlgo(int i, int j){
-		int counter = grid[i][j].getCounter();
-		List<Integer> posVals = grid[i][j].getPossibleValues();
-		
-		if(grid[i][j].hasPossibleValues() && (grid[i][j].getPossibleArraySize() > counter)){
-			
-			int value = posVals.get(counter);
-			
-			if(grid[i][j].getValue() == 0){
-				System.out.println("Adding At " + i + "," + j);
-				System.out.println("counter = " + posVals.get(counter));
-				addValueToGrid(i,j,posVals.get(counter));
-
-			} else {
-				System.out.println("Changing At " + i + "," + j);
-				changeValueInGrid(i,j,posVals.get(counter));
-			}
-			
-			grid[i][j].setCounter(counter++);
-			
-			if(i==8 && j==8){
-				return;
-			} else if(i<8 && j==8){
-				backTrackingAlgo(i+1, 0);
-				return;
-			} else{
-				backTrackingAlgo(i, j+1);
-				return;
-			}
-		} else {
-			
-			resetValueInGrid(i,j);
-			grid[i][j].setCounter(0);
-			
-			if(i==8 && j==8){
-				return;
-			} else if(j==0){
-				backTrackingAlgo(i-1,8);
-				return;
-			} else { 
-				backTrackingAlgo(i,j-1);
-				return;
-			}
-		}
-	}
-	
 	public void addValueToGrid(int row, int col, int value) {
 		if(grid[row][col].containsPossibleValue(value)){
 			grid[row][col].setValue(value);
@@ -83,7 +39,6 @@ public class Grid {
 			System.out.println("Cannot Add Value Due to Error at: " + findValue(row, col, value) + "\n");
 		}
 	}
-	
 	private String findValue(int row, int col, int value){
 		for(int i=0; i<9; i++){
 			if(grid[row][i].getValue() == value)
@@ -91,8 +46,7 @@ public class Grid {
 			if(grid[i][col].getValue() == value)
 				return grid[i][col].toString();
 		}
-		Cell[] arr = new Cell[4];
-		arr = nonHorizOrVertValues(row,col,value,arr);	
+		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 		for(int i=0;i<arr.length;i++){
 			if(arr[i].getValue()==value){
 				return arr[i].toString();
@@ -100,7 +54,6 @@ public class Grid {
 		}
 		return "N/A"; 
 	}
-	
 	private void removePossibleValues(int row, int col, int value){
 		grid[row][col].removePossibleValue(value);
 		for(int i=0; i<9; i++){
@@ -109,15 +62,13 @@ public class Grid {
 			if(i!=row && grid[i][col].containsPossibleValue(value))
 				grid[i][col].removePossibleValue(value);
 		}
-		Cell[] arr = new Cell[4];
-		arr = nonHorizOrVertValues(row,col,value,arr);	
+		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 		for(int i=0;i<arr.length;i++){
 			if(arr[i].containsPossibleValue(value)){
 				arr[i].removePossibleValue(value);
 			}
 		}
 	}
-	
 	private void addPossibleValues(int row, int col, int value){
 		grid[row][col].addPossibleValue(value);
 		for(int i=0; i<9; i++){
@@ -126,16 +77,13 @@ public class Grid {
 			if(i!=row && !(grid[i][col].containsPossibleValue(value)))
 				grid[i][col].addPossibleValue(value);
 		}
-		Cell[] arr = new Cell[4];
-		arr = nonHorizOrVertValues(row,col,value,arr);	
+		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 		for(int i=0;i<arr.length;i++){
 			if(!arr[i].containsPossibleValue(value)){
 				arr[i].addPossibleValue(value);
 			}
 		}
 	}
-	
-	
 	public void changeValueInGrid(int row, int col, int value){
 		if(value == 0){
 			
@@ -150,7 +98,6 @@ public class Grid {
 			System.out.println("CANNOT ADD VALUE HERE");
 		}
 	}
-	
 	public void resetValueInGrid(int row, int col){
 		int value = grid[row][col].getValue();
 		if(value!=0){
@@ -162,8 +109,7 @@ public class Grid {
 				if(i!=row && (findValue(i,col,value).equals("N/A")))
 					grid[i][col].addPossibleValue(value);
 			}
-			Cell[] arr = new Cell[4];
-			arr = nonHorizOrVertValues(row,col,value,arr);	
+			Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 			for(int i=0;i<arr.length;i++){
 				if((findValue(arr[i].getRow(),arr[i].getCol(),value).equals("N/A"))){
 					arr[i].addPossibleValue(value);
@@ -173,13 +119,11 @@ public class Grid {
 		} else {
 			System.out.println("Value is already 0");
 		}
+	}	
+	public void printPossibilities(int row, int col) {
+		grid[row][col].printPossibilities();
 	}
-
-	public void printPossibilities(int i, int j) {
-		grid[i][j].printPossibilities();
-	}
-
-	private Cell[] nonHorizOrVertValues(int row, int col, int value, Cell[] arr) {
+	private static Cell[] nonHorizOrVertValues(int row, int col, Cell[] arr) {
 		
 		int modRow = row%3;
 		int modCol = col%3;
@@ -254,5 +198,95 @@ public class Grid {
 		}
 		return arr;
 	}
+	public boolean backTrackingAlgo(int row, int col) {
+		 
+		 // if row is -1 the grid is filled.
+		 if (row == -1){
+		   return true;
+		 }
 
+		  // if the grid currently has a value it does not need to be solved.
+		 if (grid[row][col].getValue() != 0) {
+			 // the grid progresses to the next cell
+			 return backTrackingAlgo(getNextRow(row,col), getNextCol(col));
+		 }
+		  
+		  // tries each possible value if there is no value at current place in grid
+		 for (int x = 1; x < 10; x++) {
+			 // checks if valid
+			 boolean valid = isValid(row, col, x);
+			 // if the value is not valid it continues to try values
+			 if (!valid){ 
+				 continue;
+			 }
+			 // sets the cells value to x
+			 grid[row][col].setValue(x);;
+			 // the grid progresses to the next cell
+			 boolean solved = backTrackingAlgo(getNextRow(row,col), getNextCol(col));
+			 // if solved, return
+			 // else, try more values
+			 if (solved){
+				 return true;
+			 } else {
+				 grid[row][col].setValue(0);
+			 }
+		  }
+		  
+		 // if reached grid is not solvable
+		  return false;
+	 }
+	public static boolean isValid(int row, int col, int value) {
+
+		if (grid[row][col].getValue() != 0) {
+			throw new RuntimeException();
+		}
+		
+		// if the row contains value, return false
+		for (int y = 0; y < 9; y++) {
+			if (grid[row][y].getValue() == value){
+				return false;
+			}
+		}
+
+		// if the column contains value, return false
+		for (int x = 0; x < 9; x++) {
+			if (grid[x][col].getValue() == value){
+				return false;
+			}
+		}
+		
+		// checks rows within 3x3 not in row or col, if contains value, return false
+		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
+		for(int i=0;i<arr.length;i++){
+			if(arr[i].getValue()==value){
+				return false;
+			}
+		}
+		  
+			return true;
+	}
+	private static int getNextRow(int row, int col){
+			
+		 col++;
+
+		  if (col > 8) {
+			  col = 0;
+			  row++;
+		  }
+
+		  if (row > 8)
+			  return -1; 
+
+		  return row;
+	 }
+	private static int getNextCol(int col){
+			
+		  col++;
+
+		  if (col > 8) {
+		   col = 0;
+		  }
+
+		  return col;
+	 }
 }

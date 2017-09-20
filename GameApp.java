@@ -1,9 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.Scanner;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class GameApp {
 
@@ -99,8 +94,18 @@ public class GameApp {
 		while(badInput)
 		{
 			System.out.print(prompt);
-			x = scnr.nextInt();
-			badInput = checkVal(x);
+			if(scnr.hasNextInt()){
+				x = scnr.nextInt();
+				badInput = checkVal(x);
+			}
+			else {
+				if(x==0){
+					scnr.nextLine();
+					x=-1;
+				}
+				String str = scnr.nextLine();
+				System.out.println("Incorect input: " + str);
+			}
 		}
 		return x;
 	}

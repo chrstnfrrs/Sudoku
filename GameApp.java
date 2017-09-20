@@ -46,6 +46,7 @@ public class GameApp {
 					break;
 				case "F":
 					grid.backTrackingAlgo(0,0);
+					grid.printGrid();
 					break;
 				case "Z":
 			
@@ -60,6 +61,9 @@ public class GameApp {
 			}
 		}
 	}
+	/*
+	 * Prompts user to get user input to add values to grid
+	 */
 	private static void addValues() 
 	{
 		int row = getValueLoop("Please specify the row you would like to add a value to: ");
@@ -68,12 +72,18 @@ public class GameApp {
 		grid.addValueToGrid(row-1,col-1,value);
 		
 	}
+	/*
+	 * Prompts user to get user input to change values in grid
+	 */
 	private static void changeValues(){
 		int row = getValueLoop("Please specify the row you would like to change a value from: ");
 		int col = getValueLoop("Please specify the column you would like to change a value from: ");
 		int value = getValueLoop("Please specify the value you would like to change to at [" + row + "," + col + "]: ");
 		grid.changeValueInGrid(row-1,col-1,value);
 	}
+	/*
+	 * Prompts user to get user input to reset value in grid
+	 */
 	public static void resetValue() 
 	{
 		int row = getValueLoop("Please specify the row of the cell you would like to reset: ");
@@ -81,12 +91,18 @@ public class GameApp {
 		grid.resetValueInGrid(row-1,col-1);
 		
 	}
+	/*
+	 * Prompts user to get user input to print possible values for cell in grid
+	 */
 	private static void printPossibilities() {
 		int row = getValueLoop("Please specify the row of the cell you would like to view possibilities for: ");
 		int col = getValueLoop("Please specify the column of the cell you would like to view possibilities for: ");
 		grid.printPossibilities(row-1,col-1);
 		
 	}
+	/*
+	 * Gets user input, checks if valid type
+	 */
 	private static int getValueLoop(String prompt)
 	{
 		boolean badInput = true;
@@ -109,6 +125,9 @@ public class GameApp {
 		}
 		return x;
 	}
+	/*
+	 * Checks if user input is within bounds
+	 */
 	private static boolean checkVal(int x) 
 	{
 		if(x>0 && x<10)

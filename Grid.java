@@ -26,12 +26,17 @@ public class Grid {
 		}
 		System.out.println();
 	}
+	/*
+	 * Adds value to grid at row,col
+	 */
 	public void addValueToGrid(int row, int col, int value) {
+		// Checks to make sure value is possible for cell at row, col
 		if(grid[row][col].containsPossibleValue(value)){
+			// Sets value at row, col
 			grid[row][col].setValue(value);
 			
 			System.out.println("Added: "+grid[row][col] + "\n");
-			
+			// Changes possible values for cells affected by change.
 			removePossibleValues(row,col,value);
 			
 		} 
@@ -39,6 +44,9 @@ public class Grid {
 			System.out.println("Cannot Add Value Due to Error at: " + findValue(row, col, value) + "\n");
 		}
 	}
+	/*
+	 * Checks to see if value is in the row, col, or 3 x 3 square
+	 */
 	private String findValue(int row, int col, int value){
 		for(int i=0; i<9; i++){
 			if(grid[row][i].getValue() == value)
@@ -54,14 +62,20 @@ public class Grid {
 		}
 		return "N/A"; 
 	}
+	/*
+	 *  removes possible values in possible arrays for cells affected by 
+	 *  changes to cell at row,col
+	 */
 	private void removePossibleValues(int row, int col, int value){
 		grid[row][col].removePossibleValue(value);
+		// removes possible values from cells in rows and cols
 		for(int i=0; i<9; i++){
 			if(i!=col && grid[row][i].containsPossibleValue(value))
 				grid[row][i].removePossibleValue(value);			
 			if(i!=row && grid[i][col].containsPossibleValue(value))
 				grid[i][col].removePossibleValue(value);
 		}
+		// removes possible values from cells in 3 x 3 square
 		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 		for(int i=0;i<arr.length;i++){
 			if(arr[i].containsPossibleValue(value)){
@@ -69,14 +83,19 @@ public class Grid {
 			}
 		}
 	}
+	/*
+	 * add possible values to possible arrays for cells affected by row,col
+	 */
 	private void addPossibleValues(int row, int col, int value){
 		grid[row][col].addPossibleValue(value);
+		// adds values for horizontal and vertical cells
 		for(int i=0; i<9; i++){
 			if(i!=col && !(grid[row][i].containsPossibleValue(value)))
 				grid[row][i].addPossibleValue(value);
 			if(i!=row && !(grid[i][col].containsPossibleValue(value)))
 				grid[i][col].addPossibleValue(value);
 		}
+		// adds values for other cells in the 3x3
 		Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 		for(int i=0;i<arr.length;i++){
 			if(!arr[i].containsPossibleValue(value)){
@@ -84,9 +103,14 @@ public class Grid {
 			}
 		}
 	}
+	/*
+	 * Changes value in grid
+	 */
 	public void changeValueInGrid(int row, int col, int value){
+		// if value is 0, uses resetValueInGrid method
 		if(value == 0){
-			
+			resetValueInGrid(row,col);
+		// changes value of cell at row,col and adjusts possible array for necessary cells.
 		}else if(grid[row][col].containsPossibleValue(value)){
 			int oldValue = grid[row][col].getValue();
 			grid[row][col].setValue(value);
@@ -98,17 +122,26 @@ public class Grid {
 			System.out.println("CANNOT ADD VALUE HERE");
 		}
 	}
+	/*
+	 * Used to reset a cell in the grid to 0.
+	 */
 	public void resetValueInGrid(int row, int col){
+		// sets value to the value held by cell at row,col
 		int value = grid[row][col].getValue();
+		// checks to make sure value needs to be reset
 		if(value!=0){
+			// sets value of cell at row,col to zero
 			grid[row][col].setValue(0);
+			// adds value back to cell at row,col 's array of possible values
 			grid[row][col].addPossibleValue(value);
+			// adds value back to the array of possible value for cells in row,col row and col
 			for(int i=0; i<9; i++){
 				if(i!=col && (findValue(row,i,value).equals("N/A")))
 					grid[row][i].addPossibleValue(value);
 				if(i!=row && (findValue(i,col,value).equals("N/A")))
 					grid[i][col].addPossibleValue(value);
 			}
+			// adds value back to the array of possible value for cells in 3x3 but not in row or col
 			Cell[] arr = nonHorizOrVertValues(row, col, new Cell[4]);	
 			for(int i=0;i<arr.length;i++){
 				if((findValue(arr[i].getRow(),arr[i].getCol(),value).equals("N/A"))){
@@ -120,9 +153,16 @@ public class Grid {
 			System.out.println("Value is already 0");
 		}
 	}	
+	/*
+	 * Prints possible values for cell at row, col
+	 */
 	public void printPossibilities(int row, int col) {
 		grid[row][col].printPossibilities();
 	}
+	/*
+	 * Returns an array of cells in 3 x 3 square that are not horizontal or vertical
+	 * to the cell at row, col.
+	 */
 	private static Cell[] nonHorizOrVertValues(int row, int col, Cell[] arr) {
 		
 		int modRow = row%3;
@@ -198,6 +238,9 @@ public class Grid {
 		}
 		return arr;
 	}
+	/*
+	 * Brute force recursive backtracking algorithm to solve sudoku puzzles.
+	 */
 	public boolean backTrackingAlgo(int row, int col) {
 		 
 		 // if row is -1 the grid is filled.
@@ -234,7 +277,10 @@ public class Grid {
 		  
 		 // if reached grid is not solvable
 		  return false;
-	 }
+	}
+	/*
+	 * Checks if the value is valid for the potential cell in grid at row, col
+	 */
 	public static boolean isValid(int row, int col, int value) {
 
 		if (grid[row][col].getValue() != 0) {
@@ -265,12 +311,16 @@ public class Grid {
 		  
 			return true;
 	}
+	/*
+	 * Increments col. If col is greater than the largest possible index, row is incremented.
+	 * If row is greater than the largest possible index -1 is returned to indicate the
+	 * puzzle is solved. Returns row.
+	 */
 	private static int getNextRow(int row, int col){
 			
 		 col++;
 
 		  if (col > 8) {
-			  col = 0;
 			  row++;
 		  }
 
@@ -279,6 +329,10 @@ public class Grid {
 
 		  return row;
 	 }
+	/*
+	 * Increments col. If col is greater than the largest possible index, col is reset
+	 * to 0. Returns col.
+	 */
 	private static int getNextCol(int col){
 			
 		  col++;

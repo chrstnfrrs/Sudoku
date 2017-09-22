@@ -343,4 +343,15 @@ public class Grid {
 
 		  return col;
 	 }
+	/*
+	 * Resets grid to empty status.
+	 */
+	public static void gridReset(){
+		grid = new Cell[9][9];
+		for(int row=0; row<9;row++){
+			for(int col=0; col<9; col++){
+				grid[row][col] = new Cell(row,col,0);
+			}
+		}
+	}
 }

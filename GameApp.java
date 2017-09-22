@@ -21,7 +21,7 @@ public class GameApp {
 					+ "D: Would you like to view possibilities for a cell?\n"
 					+ "E: Would you like to see the puzzle?\n"
 					+ "F: Would you like to solve the puzzle?\n"
-					+ "Z: Testing\n"
+					+ "G: Would you like to reset to an empty puzzle?\n"
 					+ "Q: Would you like to Quit?");
 			
 			String input = scnr.next();
@@ -48,8 +48,8 @@ public class GameApp {
 					grid.backTrackingAlgo(0,0);
 					grid.printGrid();
 					break;
-				case "Z":
-			
+				case "G":
+					grid.gridReset();
 					break;
 				case "Q":
 					System.out.println("Thanks for playing!");

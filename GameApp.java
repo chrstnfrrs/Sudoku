@@ -47,6 +47,7 @@ public class GameApp {
 				case "F":
 					grid.backTrackingAlgo(0,0);
 					grid.printGrid();
+					grid = new Grid();
 					break;
 				case "G":
 					grid.gridReset();

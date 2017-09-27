@@ -119,7 +119,7 @@ public class Grid {
 			System.out.println("Changed: "+grid[row][col] + "\n");
 		}
 		else {
-			System.out.println("CANNOT ADD VALUE HERE");
+			System.out.println(value+": is not a possible value for [" + row +","+col+"].");
 		}
 	}
 	/*
@@ -351,6 +351,14 @@ public class Grid {
 		for(int row=0; row<9;row++){
 			for(int col=0; col<9; col++){
 				grid[row][col] = new Cell(row,col,0);
+			}
+		}
+	}
+	
+	public void emptyPossibleValues(){
+		for(int row=0;row<9;row++){
+			for(int col=0;col<9;col++){
+				grid[row][col].emptyPossibleValues();
 			}
 		}
 	}

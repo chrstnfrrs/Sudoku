@@ -86,6 +86,11 @@ public class Cell {
 			throw new NoSuchElementException();
 		}
 	}	
+	public void emptyPossibleValues(){
+		for(int i=0; i<possibleValues.size();){
+			possibleValues.remove(i);
+		}
+	}
 	/*
 	 * Checks if list contains value
 	 */

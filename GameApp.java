@@ -47,7 +47,8 @@ public class GameApp {
 				case "F":
 					grid.backTrackingAlgo(0,0);
 					grid.printGrid();
-					grid = new Grid();
+					grid.emptyPossibleValues();
+					reset();
 					break;
 				case "G":
 					grid.gridReset();
@@ -140,5 +141,17 @@ public class GameApp {
 			return true;
 		}
 		
+	}
+	
+	public static void reset(){
+		System.out.println("Would you like to reset the grid? (Y/N)");
+		String input = scnr.next();
+		switch(input.toUpperCase()){
+			case "Y":
+				grid.gridReset();
+				break;
+			default:
+				break;
+		}
 	}
 }

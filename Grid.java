@@ -1,4 +1,6 @@
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Grid {
 	private static Cell[][] grid;
@@ -18,9 +20,21 @@ public class Grid {
 	 * Prints out values held by cells in the grid.
 	 */
 	public void printGrid(){
+		System.out.println();
+		for(int a=0;a<9;a++)
+			System.out.print(" ---");
+		System.out.println();
 		for(int i=0;i<9;i++){
+			System.out.print("| ");
 			for(int j=0;j<9;j++){
-				System.out.print(grid[i][j].getValue() + " ");
+				if(grid[i][j].getValue()!=0)
+					System.out.print(grid[i][j].getValue() + " | ");
+				if(grid[i][j].getValue()==0)
+					System.out.print("  | ");
+			}
+			System.out.println();
+			for(int k=0;k<9;k++){
+				System.out.print(" ---");
 			}
 			System.out.println();
 		}
@@ -346,7 +360,7 @@ public class Grid {
 	/*
 	 * Resets grid to empty status.
 	 */
-	public static void gridReset(){
+	public void gridReset(){
 		grid = new Cell[9][9];
 		for(int row=0; row<9;row++){
 			for(int col=0; col<9; col++){
@@ -355,11 +369,68 @@ public class Grid {
 		}
 	}
 	
+	/*
+	 * Empties possible values for the grid.
+	 */
 	public void emptyPossibleValues(){
 		for(int row=0;row<9;row++){
 			for(int col=0;col<9;col++){
 				grid[row][col].emptyPossibleValues();
 			}
 		}
+	}
+	
+	public boolean finished(){
+		for(int row=0; row<9; row++){
+			for(int col=0; col<9; col++){
+				if(grid[row][col].getValue() == 0)
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public void loadEasy(int num) throws FileNotFoundException{
+//		num = 1;
+		
+		File file = new File("puzzles/Easy_" + num + ".txt");
+		Scanner scnr = new Scanner(file);
+		scnr.nextLine();
+		
+		for(int i=1; scnr.hasNextInt(); i++){
+			int x = scnr.nextInt() - 1;
+			int y = scnr.nextInt() - 1;
+			int z = scnr.nextInt();
+			
+			addValueToGrid(x,y,z);
+		}
+	}
+	public void loadMod(int num) throws FileNotFoundException{
+		File file = new File("puzzles/Med_" + num + ".txt");
+		Scanner scnr = new Scanner(file);
+		scnr.nextLine();
+		
+		for(int i=1; scnr.hasNextInt(); i++){
+			int x = scnr.nextInt() - 1;
+			int y = scnr.nextInt() - 1;
+			int z = scnr.nextInt();
+			
+			addValueToGrid(x,y,z);
+		}
+		
+	}
+	public void loadDif(int num)throws FileNotFoundException{
+		File file = new File("puzzles/Hard_" + num + ".txt");
+		Scanner scnr = new Scanner(file);
+		scnr.nextLine();
+		
+		for(int i=1; scnr.hasNextInt(); i++){
+			int x = scnr.nextInt() - 1;
+			int y = scnr.nextInt() - 1;
+			int z = scnr.nextInt();
+			
+			addValueToGrid(x,y,z);
+		}
+		
 	}
 }

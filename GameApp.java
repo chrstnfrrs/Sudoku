@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameApp {
@@ -5,7 +7,7 @@ public class GameApp {
 	private static Grid grid;
 	private static Scanner scnr;
 	
-	public static void main(String[] args) 
+	public static void main(String[] args) throws FileNotFoundException 
 	{
 		scnr = new Scanner(System.in);
 		grid = new Grid();
@@ -15,13 +17,14 @@ public class GameApp {
 		boolean go = true;
 		while(go)
 		{	
-			System.out.println("A: Would you like to add values to the puzzle?\n"
-					+ "B: Would you like to change the puzzle?\n"
-					+ "C: Would you like to reset a cell?\n"
-					+ "D: Would you like to view possibilities for a cell?\n"
-					+ "E: Would you like to see the puzzle?\n"
-					+ "F: Would you like to solve the puzzle?\n"
-					+ "G: Would you like to reset to an empty puzzle?\n"
+			System.out.println("A: Would you like to load a puzzle?\n"
+					+ "B: Would you like to add values to the puzzle?\n"
+					+ "C: Would you like to change the puzzle?\n"
+					+ "D: Would you like to reset a cell?\n"
+					+ "E: Would you like to view possibilities for a cell?\n"
+					+ "F: Would you like to see the puzzle?\n"
+					+ "G: Would you like to solve the puzzle?\n"
+					+ "H: Would you like to reset to an empty puzzle?\n"
 					+ "Q: Would you like to Quit?");
 			
 			String input = scnr.next();
@@ -30,27 +33,51 @@ public class GameApp {
 			switch(input)
 			{
 				case "A":
-					addValues();
+					System.out.println("This case is not yet finished.");
+					System.out.println("A: Easy\nB: Moderate\nC:Difficult");
+					
+					String secondInput = scnr.next();
+					secondInput = secondInput.toUpperCase();
+					
+					Random rand = new Random();
+					int num = rand.nextInt(10)+1;
+					
+					switch(secondInput){
+						case "A":
+							grid.loadEasy(num);
+							break;
+						case "B":
+							grid.loadMod(num);
+							break;
+						case "C":
+							grid.loadDif(num);
+							break;
+					}
+					System.out.println(num);
 					break;
 				case "B":
-					changeValues();
+					addValues();
 					break;
 				case "C":
-					resetValue();
+					changeValues();
 					break;
 				case "D":
-					printPossibilities();
+					resetValue();
 					break;
 				case "E":
-					grid.printGrid();
+					printPossibilities();
 					break;
 				case "F":
+					grid.printGrid();
+					break;
+				case "G":
 					grid.backTrackingAlgo(0,0);
 					grid.printGrid();
 					grid.emptyPossibleValues();
-					reset();
+					System.out.println("The puzzle is solved!\n\nResetting grid...\n");
+					grid.gridReset();
 					break;
-				case "G":
+				case "H":
 					grid.gridReset();
 					break;
 				case "Q":
@@ -60,6 +87,10 @@ public class GameApp {
 				default:
 					System.out.println(input + " is invalid input.");
 					break;
+			}
+			
+			if(grid.finished()){
+				System.out.println("The puzzle is solved!\n\nResetting grid...\n");
 			}
 		}
 	}
@@ -143,15 +174,5 @@ public class GameApp {
 		
 	}
 	
-	public static void reset(){
-		System.out.println("Would you like to reset the grid? (Y/N)");
-		String input = scnr.next();
-		switch(input.toUpperCase()){
-			case "Y":
-				grid.gridReset();
-				break;
-			default:
-				break;
-		}
-	}
+	
 }

@@ -33,7 +33,6 @@ public class GameApp {
 			switch(input)
 			{
 				case "A":
-					System.out.println("This case is not yet finished.");
 					System.out.println("A: Easy\nB: Moderate\nC:Difficult");
 					
 					String secondInput = scnr.next();
@@ -53,7 +52,6 @@ public class GameApp {
 							grid.loadDif(num);
 							break;
 					}
-					System.out.println(num);
 					break;
 				case "B":
 					addValues();

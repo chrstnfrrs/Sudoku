@@ -391,9 +391,8 @@ public class Grid {
 	}
 	
 	public void loadEasy(int num) throws FileNotFoundException{
-//		num = 1;
 		
-		File file = new File("puzzles/Easy_" + num + ".txt");
+		File file = new File("src/puzzles/Easy_" + num + ".txt");
 		Scanner scnr = new Scanner(file);
 		scnr.nextLine();
 		
@@ -406,7 +405,7 @@ public class Grid {
 		}
 	}
 	public void loadMod(int num) throws FileNotFoundException{
-		File file = new File("puzzles/Med_" + num + ".txt");
+		File file = new File("src/puzzles/Med_" + num + ".txt");
 		Scanner scnr = new Scanner(file);
 		scnr.nextLine();
 		
@@ -420,7 +419,7 @@ public class Grid {
 		
 	}
 	public void loadDif(int num)throws FileNotFoundException{
-		File file = new File("puzzles/Hard_" + num + ".txt");
+		File file = new File("src/puzzles/Hard_" + num + ".txt");
 		Scanner scnr = new Scanner(file);
 		scnr.nextLine();
 		
